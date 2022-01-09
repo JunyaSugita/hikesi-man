@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Bullet.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow) {
@@ -29,7 +30,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 画像などのリソースデータの変数宣言と読み込み
 
-
 	// ゲームループで使う変数の宣言
 	int map[20][50] = {
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -53,7 +53,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-
 	//マップの列の数
 	int mapCountX = sizeof(map[0]) / sizeof(map[0][0]);
 	//マップの列の数
@@ -68,6 +67,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	//プレイヤー
 	Player* player = new Player();
+
+	Bullet* bullet = new Bullet();
 
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -106,12 +107,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		player->PlayerShot(padInput.Rx, padInput.Ry);
 
 		//弾の挙動
-		player->bullet->BulletMove(player->G);
+		bullet->BulletMove(player->G);
 
 		//マップチップ上の座標位置の取得
 		player->GetPlayer(BLOCK_SIZE);
 		player->GetOldPlayer(BLOCK_SIZE);
-		player->bullet->GetBullet(BLOCK_SIZE);
+		bullet->GetBullet(BLOCK_SIZE);
 
 		//当たり判定
 		if (map[player->leftTopY][player->leftTopX] == BLOCK) {
@@ -187,18 +188,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			}
 		}
 
-		for (int i = 0; i < player->bullet->BULLET_CONST; i++) {
-			if (map[player->bullet->leftTopY[i]][player->bullet->leftTopX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
+		for (int i = 0; i < bullet->BULLET_CONST; i++) {
+			if (map[bullet->leftTopY[i]][bullet->leftTopX[i]] == BLOCK) {
+				bullet->bullet[i].isBullet = false;
 			}
-			if (map[player->bullet->leftBottomY[i]][player->bullet->leftBottomX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
+			if (map[bullet->leftBottomY[i]][bullet->leftBottomX[i]] == BLOCK) {
+				bullet->bullet[i].isBullet = false;
 			}
-			if (map[player->bullet->rightTopY[i]][player->bullet->rightTopX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
+			if (map[bullet->rightTopY[i]][bullet->rightTopX[i]] == BLOCK) {
+				bullet->bullet[i].isBullet = false;
 			}
-			if (map[player->bullet->rightBottomY[i]][player->bullet->rightBottomX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
+			if (map[bullet->rightBottomY[i]][bullet->rightBottomX[i]] == BLOCK) {
+				bullet->bullet[i].isBullet = false;
 			}
 		}
 
@@ -215,7 +216,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		}
 
 		player->DrawPlayer();
-		player->bullet->DrawBullet(player->scroll);
+		bullet->DrawBullet(player->scroll);
 
 		//デバッグ
 		DrawFormatString(0, 0, GetColor(255,255,255), "X:%d Y:%d Z:%d",
@@ -242,6 +243,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	delete player;
+	delete bullet;
 
 	// Dxライブラリ終了処理
 	DxLib_End();
