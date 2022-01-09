@@ -1,5 +1,7 @@
 #pragma once
+#include "Global.h"
 
+//プレイヤーの定義
 typedef struct {
 	int x;
 	int y;
@@ -7,5 +9,13 @@ typedef struct {
 
 typedef struct {
 	Transform transform;
-	int speed;
+	int r;
+	int isJump;
+	int jumpPow;
 } PLAYER;
+
+//前フレームのプレイヤーの定義
+typedef struct {
+	int x;
+	int y;
+}OldPlayer;

@@ -47,10 +47,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 
@@ -60,6 +60,15 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	int mapCountY = sizeof(map) / sizeof(map[0]);
 	//ブロックサイズの設定
 	const int BLOCK_SIZE = 48;
+
+	//スティック操作
+	int InputX, InputY;
+	int pad;
+	
+
+	//プレイヤー
+	Player* player = new Player();
+
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
 
@@ -83,15 +92,107 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
+		GetJoypadAnalogInput(&InputX, &InputY, DX_INPUT_PAD1);
+		pad = GetJoypadInputState(DX_INPUT_PAD1);
+
+		//プレイヤー位置の保存
+		player->SaveOldPlayer();
+
+		//プレイヤーの移動
+		player->PlayerMove(InputX);
+		player->PlayerJump(pad);
+
+		//マップチップ上の座標位置の取得
+		player->GetPlayer(BLOCK_SIZE);
+		player->GetOldPlayer(BLOCK_SIZE);
+
+		//当たり判定
+		if (map[player->leftTopY][player->leftTopX] == BLOCK) {
+			if (map[player->oldLeftTopY][player->leftTopX] == NONE && map[player->leftTopY][player->oldLeftTopX] == NONE) {}
+
+			else if (map[player->oldLeftTopY][player->leftTopX] == NONE && map[player->leftTopY][player->oldLeftTopX] == BLOCK) {
+				player->player.transform.y = player->oldPlayer.y;
+
+			}
+
+			else if (map[player->oldLeftTopY][player->leftTopX] == BLOCK && map[player->leftTopY][player->oldLeftTopX] == NONE) {
+				player->player.transform.x = player->oldPlayer.x;
+			}
+
+			else if (map[player->oldLeftTopY][player->leftTopX] == BLOCK && map[player->leftTopY][player->oldLeftTopX] == BLOCK) {
+				player->player.transform.x = player->oldPlayer.x;
+				player->player.transform.y = player->oldPlayer.y;
+			}
+		}
+		if (map[player->rightTopY][player->rightTopX] == BLOCK) {
+			if (map[player->oldRightTopY][player->rightTopX] == NONE && map[player->rightTopY][player->oldRightTopX] == NONE) {}
+
+			else if (map[player->oldRightTopY][player->rightTopX] == NONE && map[player->rightTopY][player->oldRightTopX] == BLOCK) {
+				player->player.transform.y = player->oldPlayer.y;
+
+			}
+
+			else if (map[player->oldRightTopY][player->rightTopX] == BLOCK && map[player->rightTopY][player->oldRightTopX] == NONE) {
+				player->player.transform.x = player->oldPlayer.x;
+			}
+
+			else if (map[player->oldRightTopY][player->rightTopX] == BLOCK && map[player->rightTopY][player->oldRightTopX] == BLOCK) {
+				player->player.transform.x = player->oldPlayer.x;
+				player->player.transform.y = player->oldPlayer.y;
+			}
+		}
+		if (map[player->leftBottomY][player->leftBottomX] == BLOCK) {
+			if (player->player.jumpPow <= 0) {
+				player->player.isJump = 0;
+			}
+			if (map[player->oldLeftBottomY][player->leftBottomX] == NONE && map[player->leftBottomY][player->oldLeftBottomX] == NONE) {}
+
+			else if (map[player->oldLeftBottomY][player->leftBottomX] == NONE && map[player->leftBottomY][player->oldLeftBottomX] == BLOCK) {
+				player->player.transform.y = player->oldPlayer.y;
+			}
+
+			else if (map[player->oldLeftBottomY][player->leftBottomX] == BLOCK && map[player->leftBottomY][player->oldLeftBottomX] == NONE) {
+				player->player.transform.x = player->oldPlayer.x;
+			}
+
+			else if (map[player->oldLeftBottomY][player->leftBottomX] == BLOCK && map[player->leftBottomY][player->oldLeftBottomX] == BLOCK) {
+				player->player.transform.x = player->oldPlayer.x;
+				player->player.transform.y = player->oldPlayer.y;
+			}
+		}
+		if (map[player->rightBottomY][player->rightBottomX] == BLOCK) {
+			if (player->player.jumpPow <= 0) {
+				player->player.isJump = 0;
+			}
+			if (map[player->oldRightBottomY][player->rightBottomX] == NONE && map[player->rightBottomY][player->oldRightBottomX] == NONE) {}
+
+			else if (map[player->oldRightBottomY][player->rightBottomX] == NONE && map[player->rightBottomY][player->oldRightBottomX] == BLOCK) {
+				player->player.transform.y = player->oldPlayer.y;
+			}
+
+			else if (map[player->oldRightBottomY][player->rightBottomX] == BLOCK && map[player->rightBottomY][player->oldRightBottomX] == NONE) {
+				player->player.transform.x = player->oldPlayer.x;
+			}
+
+			else if (map[player->oldRightBottomY][player->rightBottomX] == BLOCK && map[player->rightBottomY][player->oldRightBottomX] == BLOCK) {
+				player->player.transform.x = player->oldPlayer.x;
+				player->player.transform.y = player->oldPlayer.y;
+			}
+		}
+
+		//スクロール
+		player->GetScroll();
 		
 		// 描画処理
 		for (int y = 0; y < mapCountY; y++) {
 			for (int x = 0; x < mapCountX; x++) {
 				if (map[y][x] == BLOCK) {
-					DrawBox(x * BLOCK_SIZE, y * BLOCK_SIZE, (x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE, GetColor(255, 255, 255), true);
+					DrawBox(x * BLOCK_SIZE - player->scroll, y * BLOCK_SIZE, (x + 1) * BLOCK_SIZE - player->scroll, (y + 1) * BLOCK_SIZE, GetColor(255, 255, 255), true);
 				}
 			}
 		}
+
+		player->DrawPlayer();
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();
@@ -109,6 +210,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		}
 	}
+
+	delete player;
+
 	// Dxライブラリ終了処理
 	DxLib_End();
 
