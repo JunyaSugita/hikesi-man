@@ -1,5 +1,6 @@
 #pragma once
 #include "Struct.h"
+#include "Bullet.h"
 
 class Player{
 public:
@@ -8,8 +9,9 @@ public:
 
 public:
 	void SaveOldPlayer();
-	void PlayerMove(int InputX);
+	void PlayerMove(int LInputX,int RInputX,int RInputY);
 	void PlayerJump(int pad);
+	void PlayerShot(int InputX,int InputY);
 	void GetPlayer(int BLOCK_SIZE);
 	void GetOldPlayer(int BLOCK_SIZE);
 	void GetScroll();
@@ -41,5 +43,8 @@ public:
 
 	//ÉXÉNÉçÅ[Éã
 	int scroll;
+
+	//íe
+	Bullet* bullet;
 };
 

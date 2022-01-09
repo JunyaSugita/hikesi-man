@@ -42,30 +42,47 @@ Player::Player() {
 	oldRightBottomY = 0;
 
 	scroll = 0;
+
+	bullet = new Bullet;
 }
 
-Player::~Player() {}
+Player::~Player() {
+	delete bullet;
+}
 
 void Player::SaveOldPlayer() {
 	oldPlayer.x = player.transform.x;
 	oldPlayer.y = player.transform.y;
 }
 
-void Player::PlayerMove(int InputX) {
-	if (InputX > 0 || InputX < 0) {
-		player.transform.x += InputX / 200;
+void Player::PlayerMove(int LInputX, int RInputX, int RInputY) {
+	if (LInputX > 0 || LInputX < 0) {
+		player.transform.x += LInputX / 200;
 	}
 	player.transform.y += G - player.jumpPow;
+
+	if ((RInputX <= 0 && RInputY < 0) || (RInputX <= 0 && RInputY > 0) || RInputX < 0) {
+		if (player.isJump == 1) {
+			player.transform.x += (RInputX * -1) / 50;
+			player.transform.y += (RInputY * -1) / 50;
+		}
+	}
 }
 
 void Player::PlayerJump(int pad) {
-	if (pad & PAD_INPUT_1 && player.isJump == 0) {
+	if (pad & PAD_INPUT_6 && player.isJump == 0) {
 		player.isJump = 1;
 		player.jumpPow = 20;
 	}
 
-	if (player.isJump == 1) {
-		player.jumpPow --;
+	if (player.isJump == 1 && player.jumpPow > 0) {
+		player.jumpPow--;
+	}
+}
+
+void Player::PlayerShot(int InputX, int InputY) {
+	if ((InputX <= 0 && InputY < 0) || (InputX <= 0 && InputY > 0) || InputX < 0) {
+		bullet->BulletShot(player.transform, InputX, InputY);
 	}
 }
 
