@@ -20,7 +20,7 @@ typedef struct {
 	int y;
 }OldPlayer;
 
-//…‚Ì”­Ë
+//…‚Ì’è‹`
 typedef struct {
 	Transform transform;
 	int r;
@@ -28,3 +28,11 @@ typedef struct {
 	float speedY;
 	int isBullet;
 }BULLET;
+
+//‰Î‚Ì’è‹`
+typedef struct {
+	Transform transform;
+	int Xr;
+	int Yr;
+	int isFire;
+}FIRE;

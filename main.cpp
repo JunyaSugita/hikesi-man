@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Map.h"
+#include "Fire.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow) {
@@ -38,13 +39,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	DINPUT_JOYSTATE padInput;
 	int pad;
 
-
 	//プレイヤー
 	Player* player = new Player();
 	//水
 	Bullet* bullet = new Bullet();
 	//マップ
 	Map* map = new Map();
+	//火
+	Fire* fire = new Fire();
 
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -75,6 +77,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//マップ選択
 		map->SelectMap1();
 
+		//火の設置
+		fire->SetFire(map->map);
+
 		//プレイヤー位置の保存
 		player->SaveOldPlayer();
 
@@ -87,6 +92,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		//弾の挙動
 		player->bullet->BulletMove(player->G);
+
+		//消化
+		fire->FireFighting();
 
 		//マップチップ上の座標位置の取得
 		player->GetPlayer(map->BLOCK_SIZE);
@@ -101,6 +109,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		player->GetScroll();
 
 		// 描画処理
+		fire->DrawFire(player->scroll);
 		map->DrawMap(map->map, player->scroll);
 		player->DrawPlayer();
 		player->bullet->DrawBullet(player->scroll);
@@ -135,6 +144,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	delete player;
 	delete bullet;
 	delete map;
+	delete fire;
 
 	// Dxライブラリ終了処理
 	DxLib_End();
