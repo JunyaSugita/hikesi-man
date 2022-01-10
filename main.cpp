@@ -78,7 +78,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		map->SelectMap1();
 
 		//火の設置
-		fire->SetFire(map->map);
+		if (keys[KEY_INPUT_F] == 1) {
+			fire->SetFire(map->map);
+		}
 
 		//プレイヤー位置の保存
 		player->SaveOldPlayer();
@@ -115,13 +117,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		player->bullet->DrawBullet(player->scroll);
 
 		//デバッグ
-		DrawFormatString(0, 0, GetColor(150, 150, 150), "X:%d Y:%d Z:%d",
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+		DrawBox(0, 0, 500, 100, GetColor(255, 255, 255), true);
+		DrawFormatString(0, 0, GetColor(50, 50, 50), "X:%d Y:%d Z:%d",
 			padInput.X, padInput.Y, padInput.Z);
-		DrawFormatString(0, 16, GetColor(150, 150, 150), "Rx:%d Ry:%d Rz:%d",
+		DrawFormatString(0, 16, GetColor(50, 50, 50), "Rx:%d Ry:%d Rz:%d",
 			padInput.Rx, padInput.Ry, padInput.Rz);
 
-		DrawFormatString(0, 32, GetColor(150, 150, 150), "左スティック：移動　右スティック：放水(左のみ)");
-		DrawFormatString(0, 48, GetColor(150, 150, 150), "LB:ジャンプ");
+		DrawFormatString(0, 32, GetColor(50, 50, 50), "左スティック：移動　右スティック：放水(左のみ)");
+		DrawFormatString(0, 48, GetColor(50, 50, 50), "LB:ジャンプ");
+		DrawFormatString(0, 64, GetColor(50, 50, 50), "Fキー:放火(デバッグ用)");
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面

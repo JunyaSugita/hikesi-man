@@ -126,13 +126,13 @@ void Player::GetScroll() {
 
 void Player::BlockCollision(int map[][50]) {
 	if (map[leftTopY][leftTopX] == BLOCK) {
-		if (map[oldLeftTopY][leftTopX] == NONE && map[leftTopY][oldLeftTopX] == NONE) {}
+		if (map[oldLeftTopY][leftTopX] != BLOCK && map[leftTopY][oldLeftTopX] != BLOCK) {}
 
-		else if (map[oldLeftTopY][leftTopX] == NONE && map[leftTopY][oldLeftTopX] == BLOCK) {
+		else if (map[oldLeftTopY][leftTopX] != BLOCK && map[leftTopY][oldLeftTopX] == BLOCK) {
 			player.transform.y = oldPlayer.y;
 		}
 
-		else if (map[oldLeftTopY][leftTopX] == BLOCK && map[leftTopY][oldLeftTopX] == NONE) {
+		else if (map[oldLeftTopY][leftTopX] == BLOCK && map[leftTopY][oldLeftTopX] != BLOCK) {
 			player.transform.x = oldPlayer.x;
 		}
 
@@ -142,14 +142,14 @@ void Player::BlockCollision(int map[][50]) {
 		}
 	}
 	if (map[rightTopY][rightTopX] == BLOCK) {
-		if (map[oldRightTopY][rightTopX] == NONE && map[rightTopY][oldRightTopX] == NONE) {}
+		if (map[oldRightTopY][rightTopX] != BLOCK && map[rightTopY][oldRightTopX] != BLOCK) {}
 
-		else if (map[oldRightTopY][rightTopX] == NONE && map[rightTopY][oldRightTopX] == BLOCK) {
+		else if (map[oldRightTopY][rightTopX] != BLOCK && map[rightTopY][oldRightTopX] == BLOCK) {
 			player.transform.y = oldPlayer.y;
 
 		}
 
-		else if (map[oldRightTopY][rightTopX] == BLOCK && map[rightTopY][oldRightTopX] == NONE) {
+		else if (map[oldRightTopY][rightTopX] == BLOCK && map[rightTopY][oldRightTopX] != BLOCK) {
 			player.transform.x = oldPlayer.x;
 		}
 
@@ -162,13 +162,13 @@ void Player::BlockCollision(int map[][50]) {
 		if (player.jumpPow <= 0) {
 			player.isJump = 0;
 		}
-		if (map[oldLeftBottomY][leftBottomX] == NONE && map[leftBottomY][oldLeftBottomX] == NONE) {}
+		if (map[oldLeftBottomY][leftBottomX] != BLOCK && map[leftBottomY][oldLeftBottomX] != BLOCK) {}
 
-		else if (map[oldLeftBottomY][leftBottomX] == NONE && map[leftBottomY][oldLeftBottomX] == BLOCK) {
+		else if (map[oldLeftBottomY][leftBottomX] != BLOCK && map[leftBottomY][oldLeftBottomX] == BLOCK) {
 			player.transform.y = oldPlayer.y;
 		}
 
-		else if (map[oldLeftBottomY][leftBottomX] == BLOCK && map[leftBottomY][oldLeftBottomX] == NONE) {
+		else if (map[oldLeftBottomY][leftBottomX] == BLOCK && map[leftBottomY][oldLeftBottomX] != BLOCK) {
 			player.transform.x = oldPlayer.x;
 		}
 
@@ -181,13 +181,13 @@ void Player::BlockCollision(int map[][50]) {
 		if (player.jumpPow <= 0) {
 			player.isJump = 0;
 		}
-		if (map[oldRightBottomY][rightBottomX] == NONE && map[rightBottomY][oldRightBottomX] == NONE) {}
+		if (map[oldRightBottomY][rightBottomX] != BLOCK && map[rightBottomY][oldRightBottomX] != BLOCK) {}
 
-		else if (map[oldRightBottomY][rightBottomX] == NONE && map[rightBottomY][oldRightBottomX] == BLOCK) {
+		else if (map[oldRightBottomY][rightBottomX] != BLOCK && map[rightBottomY][oldRightBottomX] == BLOCK) {
 			player.transform.y = oldPlayer.y;
 		}
 
-		else if (map[oldRightBottomY][rightBottomX] == BLOCK && map[rightBottomY][oldRightBottomX] == NONE) {
+		else if (map[oldRightBottomY][rightBottomX] == BLOCK && map[rightBottomY][oldRightBottomX] != BLOCK) {
 			player.transform.x = oldPlayer.x;
 		}
 
