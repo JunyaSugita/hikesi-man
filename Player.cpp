@@ -44,10 +44,12 @@ Player::Player() {
 	scroll = 0;
 
 	bullet = new Bullet;
+	map = new Map;
 }
 
 Player::~Player() {
 	delete bullet;
+	delete map;
 }
 
 void Player::SaveOldPlayer() {
@@ -70,7 +72,7 @@ void Player::PlayerMove(int LInputX, int RInputX, int RInputY) {
 }
 
 void Player::PlayerJump(int pad) {
-	if (pad & PAD_INPUT_6 && player.isJump == 0) {
+	if (pad & PAD_INPUT_5 && player.isJump == 0) {
 		player.isJump = 1;
 		player.jumpPow = 20;
 	}
@@ -119,6 +121,80 @@ void Player::GetOldPlayer(int BLOCK_SIZE) {
 void Player::GetScroll() {
 	if (player.transform.x >= WIN_WIDTH / 2 && player.transform.x <= WIN_WIDTH + (WIN_WIDTH / 2)) {
 		scroll = player.transform.x - WIN_WIDTH / 2;
+	}
+}
+
+void Player::BlockCollision(int map[][50]) {
+	if (map[leftTopY][leftTopX] == BLOCK) {
+		if (map[oldLeftTopY][leftTopX] == NONE && map[leftTopY][oldLeftTopX] == NONE) {}
+
+		else if (map[oldLeftTopY][leftTopX] == NONE && map[leftTopY][oldLeftTopX] == BLOCK) {
+			player.transform.y = oldPlayer.y;
+		}
+
+		else if (map[oldLeftTopY][leftTopX] == BLOCK && map[leftTopY][oldLeftTopX] == NONE) {
+			player.transform.x = oldPlayer.x;
+		}
+
+		else if (map[oldLeftTopY][leftTopX] == BLOCK && map[leftTopY][oldLeftTopX] == BLOCK) {
+			player.transform.x = oldPlayer.x;
+			player.transform.y = oldPlayer.y;
+		}
+	}
+	if (map[rightTopY][rightTopX] == BLOCK) {
+		if (map[oldRightTopY][rightTopX] == NONE && map[rightTopY][oldRightTopX] == NONE) {}
+
+		else if (map[oldRightTopY][rightTopX] == NONE && map[rightTopY][oldRightTopX] == BLOCK) {
+			player.transform.y = oldPlayer.y;
+
+		}
+
+		else if (map[oldRightTopY][rightTopX] == BLOCK && map[rightTopY][oldRightTopX] == NONE) {
+			player.transform.x = oldPlayer.x;
+		}
+
+		else if (map[oldRightTopY][rightTopX] == BLOCK && map[rightTopY][oldRightTopX] == BLOCK) {
+			player.transform.x = oldPlayer.x;
+			player.transform.y = oldPlayer.y;
+		}
+	}
+	if (map[leftBottomY][leftBottomX] == BLOCK) {
+		if (player.jumpPow <= 0) {
+			player.isJump = 0;
+		}
+		if (map[oldLeftBottomY][leftBottomX] == NONE && map[leftBottomY][oldLeftBottomX] == NONE) {}
+
+		else if (map[oldLeftBottomY][leftBottomX] == NONE && map[leftBottomY][oldLeftBottomX] == BLOCK) {
+			player.transform.y = oldPlayer.y;
+		}
+
+		else if (map[oldLeftBottomY][leftBottomX] == BLOCK && map[leftBottomY][oldLeftBottomX] == NONE) {
+			player.transform.x = oldPlayer.x;
+		}
+
+		else if (map[oldLeftBottomY][leftBottomX] == BLOCK && map[leftBottomY][oldLeftBottomX] == BLOCK) {
+			player.transform.x = oldPlayer.x;
+			player.transform.y = oldPlayer.y;
+		}
+	}
+	if (map[rightBottomY][rightBottomX] == BLOCK) {
+		if (player.jumpPow <= 0) {
+			player.isJump = 0;
+		}
+		if (map[oldRightBottomY][rightBottomX] == NONE && map[rightBottomY][oldRightBottomX] == NONE) {}
+
+		else if (map[oldRightBottomY][rightBottomX] == NONE && map[rightBottomY][oldRightBottomX] == BLOCK) {
+			player.transform.y = oldPlayer.y;
+		}
+
+		else if (map[oldRightBottomY][rightBottomX] == BLOCK && map[rightBottomY][oldRightBottomX] == NONE) {
+			player.transform.x = oldPlayer.x;
+		}
+
+		else if (map[oldRightBottomY][rightBottomX] == BLOCK && map[rightBottomY][oldRightBottomX] == BLOCK) {
+			player.transform.x = oldPlayer.x;
+			player.transform.y = oldPlayer.y;
+		}
 	}
 }
 

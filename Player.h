@@ -1,20 +1,22 @@
 #pragma once
 #include "Struct.h"
 #include "Bullet.h"
+#include "Map.h"
 
-class Player{
+class Player {
 public:
 	Player();
 	~Player();
 
 public:
 	void SaveOldPlayer();
-	void PlayerMove(int LInputX,int RInputX,int RInputY);
+	void PlayerMove(int LInputX, int RInputX, int RInputY);
 	void PlayerJump(int pad);
-	void PlayerShot(int InputX,int InputY);
+	void PlayerShot(int InputX, int InputY);
 	void GetPlayer(int BLOCK_SIZE);
 	void GetOldPlayer(int BLOCK_SIZE);
 	void GetScroll();
+	void BlockCollision(int map[][50]);
 
 	void DrawPlayer();
 public:
@@ -46,5 +48,6 @@ public:
 
 	//’e
 	Bullet* bullet;
+	//ƒ}ƒbƒv
+	Map* map;
 };
-

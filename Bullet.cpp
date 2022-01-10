@@ -25,11 +25,15 @@ Bullet::Bullet() {
 		rightBottomX[i] = 0;
 		rightBottomY[i] = 0;
 	}
+
+	map = new Map;
 }
 
-Bullet::~Bullet() {}
+Bullet::~Bullet() {
+	delete map;
+}
 
-void Bullet::BulletShot(Transform transform,int x,int y) {
+void Bullet::BulletShot(Transform transform, int x, int y) {
 	for (int i = 0; i < BULLET_CONST; i++) {
 		if (bullet[i].isBullet == false) {
 			bullet[i].isBullet = true;
@@ -68,10 +72,30 @@ void Bullet::GetBullet(int BLOCK_SIZE) {
 	}
 }
 
+void Bullet::BlockCollision(int map[][50]) {
+	for (int i = 0; i < BULLET_CONST; i++) {
+		if (bullet[i].isBullet == true) {
+			if (map[leftTopY[i]][leftTopX[i]] == BLOCK) {
+				bullet[i].isBullet = false;
+			}
+			if (map[leftBottomY[i]][leftBottomX[i]] == BLOCK) {
+				bullet[i].isBullet = false;
+			}
+			if (map[rightTopY[i]][rightTopX[i]] == BLOCK) {
+				bullet[i].isBullet = false;
+			}
+			if (map[rightBottomY[i]][rightBottomX[i]] == BLOCK) {
+				bullet[i].isBullet = false;
+			}
+		}
+	}
+}
+
+
 void Bullet::DrawBullet(int scroll) {
 	for (int i = 0; i < BULLET_CONST; i++) {
 		if (bullet[i].isBullet == true) {
-			DrawCircle(bullet[i].transform.x - scroll,bullet[i].transform.y,bullet[i].r,GetColor(0,0,255),true);
+			DrawCircle(bullet[i].transform.x - scroll, bullet[i].transform.y, bullet[i].r, GetColor(0, 0, 255), true);
 		}
 	}
 }

@@ -1,13 +1,17 @@
 #pragma once
 #include "Struct.h"
 
-class Map{
+class Map {
 public:
 	Map();
 	~Map();
 
 public:
-	int map1(int y, int x);
+	int Map1(int y, int x);
+
+	void SelectMap1();
+
+	void DrawMap(int map[][50], int scroll);
 public:
 	int map[20][50];
 	int mapCountX;
@@ -15,4 +19,3 @@ public:
 
 	const int BLOCK_SIZE = 48;
 };
-

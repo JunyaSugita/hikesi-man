@@ -2,14 +2,14 @@
 
 Map::Map() {
 	//マップの列の数
-	int mapCountX = sizeof(map[0]) / sizeof(map[0][0]);
+	mapCountX = sizeof(map[0]) / sizeof(map[0][0]);
 	//マップの列の数
-	int mapCountY = sizeof(map) / sizeof(map[0]);
+	mapCountY = sizeof(map) / sizeof(map[0]);
 }
 
-Map::~Map(){}
+Map::~Map() {}
 
-int Map::map1(int y, int x) {
+int Map::Map1(int y, int x) {
 	int a[20][50] = {
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -34,4 +34,22 @@ int Map::map1(int y, int x) {
 	};
 
 	return a[y][x];
+}
+
+void Map::SelectMap1() {
+	for (int y = 0; y < mapCountY; y++) {
+		for (int x = 0; x < mapCountX; x++) {
+			map[y][x] = Map1(y, x);
+		}
+	}
+}
+
+void Map::DrawMap(int map[][50], int scroll) {
+	for (int y = 0; y < mapCountY; y++) {
+		for (int x = 0; x < mapCountX; x++) {
+			if (map[y][x] == BLOCK) {
+				DrawBox(x * BLOCK_SIZE - scroll, y * BLOCK_SIZE, (x + 1) * BLOCK_SIZE - scroll, (y + 1) * BLOCK_SIZE, GetColor(255, 255, 255), true);
+			}
+		}
+	}
 }
