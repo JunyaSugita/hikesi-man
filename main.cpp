@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Bullet.h"
+#include "Map.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow) {
@@ -31,7 +33,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-	
+
 	//スティック操作
 	DINPUT_JOYSTATE padInput;
 	int pad;
@@ -39,6 +41,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	//プレイヤー
 	Player* player = new Player();
+	//水
+	Bullet* bullet = new Bullet();
+	//マップ
+	Map* map = new Map();
 
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -66,11 +72,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		GetJoypadDirectInputState(DX_INPUT_PAD1, &padInput);
 		pad = GetJoypadInputState(DX_INPUT_PAD1);
 
+		//マップ選択
+		map->SelectMap1();
+
 		//プレイヤー位置の保存
 		player->SaveOldPlayer();
 
 		//プレイヤーの移動
-		player->PlayerMove(padInput.X,padInput.Rx,padInput.Ry);
+		player->PlayerMove(padInput.X, padInput.Rx, padInput.Ry);
 		player->PlayerJump(pad);
 
 		//弾の発射
@@ -80,116 +89,24 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		player->bullet->BulletMove(player->G);
 
 		//マップチップ上の座標位置の取得
-		player->GetPlayer(BLOCK_SIZE);
-		player->GetOldPlayer(BLOCK_SIZE);
-		player->bullet->GetBullet(BLOCK_SIZE);
+		player->GetPlayer(map->BLOCK_SIZE);
+		player->GetOldPlayer(map->BLOCK_SIZE);
+		bullet->GetBullet(map->BLOCK_SIZE);
 
 		//当たり判定
-		if (map[player->leftTopY][player->leftTopX] == BLOCK) {
-			if (map[player->oldLeftTopY][player->leftTopX] == NONE && map[player->leftTopY][player->oldLeftTopX] == NONE) {}
-
-			else if (map[player->oldLeftTopY][player->leftTopX] == NONE && map[player->leftTopY][player->oldLeftTopX] == BLOCK) {
-				player->player.transform.y = player->oldPlayer.y;
-
-			}
-
-			else if (map[player->oldLeftTopY][player->leftTopX] == BLOCK && map[player->leftTopY][player->oldLeftTopX] == NONE) {
-				player->player.transform.x = player->oldPlayer.x;
-			}
-
-			else if (map[player->oldLeftTopY][player->leftTopX] == BLOCK && map[player->leftTopY][player->oldLeftTopX] == BLOCK) {
-				player->player.transform.x = player->oldPlayer.x;
-				player->player.transform.y = player->oldPlayer.y;
-			}
-		}
-		if (map[player->rightTopY][player->rightTopX] == BLOCK) {
-			if (map[player->oldRightTopY][player->rightTopX] == NONE && map[player->rightTopY][player->oldRightTopX] == NONE) {}
-
-			else if (map[player->oldRightTopY][player->rightTopX] == NONE && map[player->rightTopY][player->oldRightTopX] == BLOCK) {
-				player->player.transform.y = player->oldPlayer.y;
-
-			}
-
-			else if (map[player->oldRightTopY][player->rightTopX] == BLOCK && map[player->rightTopY][player->oldRightTopX] == NONE) {
-				player->player.transform.x = player->oldPlayer.x;
-			}
-
-			else if (map[player->oldRightTopY][player->rightTopX] == BLOCK && map[player->rightTopY][player->oldRightTopX] == BLOCK) {
-				player->player.transform.x = player->oldPlayer.x;
-				player->player.transform.y = player->oldPlayer.y;
-			}
-		}
-		if (map[player->leftBottomY][player->leftBottomX] == BLOCK) {
-			if (player->player.jumpPow <= 0) {
-				player->player.isJump = 0;
-			}
-			if (map[player->oldLeftBottomY][player->leftBottomX] == NONE && map[player->leftBottomY][player->oldLeftBottomX] == NONE) {}
-
-			else if (map[player->oldLeftBottomY][player->leftBottomX] == NONE && map[player->leftBottomY][player->oldLeftBottomX] == BLOCK) {
-				player->player.transform.y = player->oldPlayer.y;
-			}
-
-			else if (map[player->oldLeftBottomY][player->leftBottomX] == BLOCK && map[player->leftBottomY][player->oldLeftBottomX] == NONE) {
-				player->player.transform.x = player->oldPlayer.x;
-			}
-
-			else if (map[player->oldLeftBottomY][player->leftBottomX] == BLOCK && map[player->leftBottomY][player->oldLeftBottomX] == BLOCK) {
-				player->player.transform.x = player->oldPlayer.x;
-				player->player.transform.y = player->oldPlayer.y;
-			}
-		}
-		if (map[player->rightBottomY][player->rightBottomX] == BLOCK) {
-			if (player->player.jumpPow <= 0) {
-				player->player.isJump = 0;
-			}
-			if (map[player->oldRightBottomY][player->rightBottomX] == NONE && map[player->rightBottomY][player->oldRightBottomX] == NONE) {}
-
-			else if (map[player->oldRightBottomY][player->rightBottomX] == NONE && map[player->rightBottomY][player->oldRightBottomX] == BLOCK) {
-				player->player.transform.y = player->oldPlayer.y;
-			}
-
-			else if (map[player->oldRightBottomY][player->rightBottomX] == BLOCK && map[player->rightBottomY][player->oldRightBottomX] == NONE) {
-				player->player.transform.x = player->oldPlayer.x;
-			}
-
-			else if (map[player->oldRightBottomY][player->rightBottomX] == BLOCK && map[player->rightBottomY][player->oldRightBottomX] == BLOCK) {
-				player->player.transform.x = player->oldPlayer.x;
-				player->player.transform.y = player->oldPlayer.y;
-			}
-		}
-
-		for (int i = 0; i < player->bullet->BULLET_CONST; i++) {
-			if (map[player->bullet->leftTopY[i]][player->bullet->leftTopX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
-			}
-			if (map[player->bullet->leftBottomY[i]][player->bullet->leftBottomX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
-			}
-			if (map[player->bullet->rightTopY[i]][player->bullet->rightTopX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
-			}
-			if (map[player->bullet->rightBottomY[i]][player->bullet->rightBottomX[i]] == BLOCK) {
-				player->bullet->bullet[i].isBullet = false;
-			}
-		}
+		player->BlockCollision(map->map);
+		bullet->BlockCollision(map->map);
 
 		//スクロール
 		player->GetScroll();
 
 		// 描画処理
-		for (int y = 0; y < mapCountY; y++) {
-			for (int x = 0; x < mapCountX; x++) {
-				if (map[y][x] == BLOCK) {
-					DrawBox(x * BLOCK_SIZE - player->scroll, y * BLOCK_SIZE, (x + 1) * BLOCK_SIZE - player->scroll, (y + 1) * BLOCK_SIZE, GetColor(255, 255, 255), true);
-				}
-			}
-		}
-
+		map->DrawMap(map->map, player->scroll);
 		player->DrawPlayer();
 		player->bullet->DrawBullet(player->scroll);
 
 		//デバッグ
-		DrawFormatString(0, 0, GetColor(255,255,255), "X:%d Y:%d Z:%d",
+		DrawFormatString(0, 0, GetColor(255, 255, 255), "X:%d Y:%d Z:%d",
 			padInput.X, padInput.Y, padInput.Z);
 		DrawFormatString(0, 16, GetColor(255, 255, 255), "Rx:%d Ry:%d Rz:%d",
 			padInput.Rx, padInput.Ry, padInput.Rz);
@@ -213,6 +130,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	delete player;
+	delete bullet;
+	delete map;
 
 	// Dxライブラリ終了処理
 	DxLib_End();

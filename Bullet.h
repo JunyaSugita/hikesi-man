@@ -1,5 +1,6 @@
 #pragma once
 #include "Struct.h"
+#include "Map.h"
 
 class Bullet {
 public:
@@ -10,6 +11,7 @@ public:
 	void BulletShot(Transform transform, int x, int y);
 	void BulletMove(const int G);
 	void GetBullet(int BLOCK_SIZE);
+	void BlockCollision(int map[][50]);
 
 	void DrawBullet(int scroll);
 public:
@@ -28,5 +30,8 @@ public:
 	//右下の座標
 	int rightBottomX[500];
 	int rightBottomY[500];
+
+	//マップ
+	Map* map;
 };
 
