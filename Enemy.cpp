@@ -24,6 +24,7 @@ void Enemy::Make() {
 		if (enemy[i].isAlive == 0) {
 			enemy[i].transform.x = 300 + z;
 			enemy[i].transform.y = 300 + z;
+
 			z += 30;
 			enemy[i].isAlive = 1;
 		}

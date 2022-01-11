@@ -7,8 +7,7 @@ class Enemy {
 public:
 	const int ENEMY_CONST = 10;
 	ENEMY enemy[10];
-
-
+  
 public:
 	Enemy();
 	~Enemy();
