@@ -7,6 +7,7 @@ Scene::Scene() {
 	rescued = new Rescued;
 	map = new Map;
 	fire = new Fire;
+	goal = new Goal;
 }
 
 //コンストラクタ
@@ -16,11 +17,21 @@ Scene::~Scene() {
 	delete rescued;
 	delete map;
 	delete fire;
+	delete goal;
 }
 
 
 ///-----関数-----///
 void Scene::Update(char* keys,char* oldkeys) {
+
+	//例外処理
+	if (keys == nullptr || oldkeys == nullptr) {
+		return;
+	}
+
+	GetHitKeyStateAll(keys);
+	ClearDrawScreen();
+
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &padInput);
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
@@ -38,6 +49,7 @@ void Scene::Update(char* keys,char* oldkeys) {
 	//プレイヤーの移動
 	player->PlayerMove(padInput.X, padInput.Rx, padInput.Ry);
 	player->PlayerJump(pad);
+	rescued->Move(player);
 
 	//弾の発射
 	player->PlayerShot(padInput.Rx, padInput.Ry);
@@ -56,6 +68,8 @@ void Scene::Update(char* keys,char* oldkeys) {
 	//当たり判定
 	player->BlockCollision(map->map);
 	player->bullet->BlockCollision(map->map);
+	rescued->RescuedCollision(player);
+	goal->GetGoal(player, rescued);
 
 	//スクロール
 	player->GetScroll();
@@ -63,8 +77,10 @@ void Scene::Update(char* keys,char* oldkeys) {
 
 void Scene::Draw() {
 	// 描画処理
+	goal->Draw(rescued,player->scroll);
 	fire->DrawFire(player->scroll);
 	map->DrawMap(map->map, player->scroll);
+	rescued->Draw(player->scroll);
 	player->DrawPlayer();
 	player->bullet->DrawBullet(player->scroll);
 

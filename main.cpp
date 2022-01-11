@@ -47,14 +47,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{
 			oldkeys[i] = keys[i];
 		}
-		//配列なのでoldkey - keys;のようにできない。要素を１つずつコピー
-
-		// 最新のキーボード情報を取得
-		GetHitKeyStateAll(keys);
-
-		// 画面クリア
-		ClearDrawScreen();
-		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理
 		scene->Update(keys, oldkeys);

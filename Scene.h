@@ -4,6 +4,7 @@
 #include"Map.h"
 #include"Player.h"
 #include"Rescued.h"
+#include "Goal.h"
 
 
 class Scene {
@@ -13,6 +14,7 @@ public:
 	Rescued* rescued;
 	Map* map;
 	Fire* fire;
+	Goal* goal;
 	DINPUT_JOYSTATE padInput;
 	int pad;
 
