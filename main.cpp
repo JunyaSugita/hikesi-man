@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "Map.h"
 #include "Fire.h"
+#include "Enemy.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow) {
@@ -47,6 +48,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Map* map = new Map();
 	//火
 	Fire* fire = new Fire();
+	//敵
+	Enemy* ene = new Enemy();
 
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -95,6 +98,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//弾の挙動
 		player->bullet->BulletMove(player->G);
 
+		//敵の出現
+		ene->Update(player->bullet->bullet);
+
 		//消化
 		fire->FireFighting();
 
@@ -115,6 +121,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		map->DrawMap(map->map, player->scroll);
 		player->DrawPlayer();
 		player->bullet->DrawBullet(player->scroll);
+
+		ene->Draw(player->scroll);
 
 		//デバッグ
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
@@ -151,6 +159,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	delete bullet;
 	delete map;
 	delete fire;
+	delete ene;
 
 	// Dxライブラリ終了処理
 	DxLib_End();

@@ -36,3 +36,15 @@ typedef struct {
 	int Yr;
 	int isFire;
 }FIRE;
+
+//“G‚Ì’è‹`
+typedef struct {
+	Transform transform;
+	int r;
+	int Xr;
+	int Yr;
+	int isAlive;
+	int hp;
+	int time;
+	int way;
+}ENEMY;
