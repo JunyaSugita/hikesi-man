@@ -41,18 +41,18 @@ void Fire::SetFire(int mapChip[][50]) {
 	}
 }
 
-void Fire::FireFighting(BULLET bullets[]) {
+void Fire::FireFighting(BULLET bullet[]) {
 	for (int i = 0; i < FIRE_CONST; i++) {
-		for (int j = 0; j < bullet->BULLET_CONST; j++) {
-			if (fire[i].isFire == true && bullets[j].isBullet == true) {
-				if (fire[i].transform.x + fire[i].Xr > bullets[j].transform.x - bullet->bullet[j].r &&
-					fire[i].transform.x - fire[i].Xr < bullets[j].transform.x + bullet->bullet[j].r &&
-					fire[i].transform.y + fire[i].Yr > bullets[j].transform.y - bullet->bullet[j].r &&
-					fire[i].transform.y - fire[i].Yr < bullets[j].transform.y + bullet->bullet[j].r) {
+		for (int j = 0; j < this->bullet->BULLET_CONST; j++) {
+			if (fire[i].isFire == true && bullet[j].isBullet == true) {
+				if (fire[i].transform.x + fire[i].Xr > bullet[j].transform.x - this->bullet->bullet[j].r &&
+					fire[i].transform.x - fire[i].Xr < bullet[j].transform.x + this->bullet->bullet[j].r &&
+					fire[i].transform.y + fire[i].Yr > bullet[j].transform.y - this->bullet->bullet[j].r &&
+					fire[i].transform.y - fire[i].Yr < bullet[j].transform.y + this->bullet->bullet[j].r) {
 
 					fire[i].Xr -= 2;
 					fire[i].Yr -= 4;
-					bullets[j].isBullet = false;
+					bullet[j].isBullet = false;
 
 					if (fire[i].Xr <= 0 || fire[i].Yr <= 0) {
 						fire[i].isFire = false;
