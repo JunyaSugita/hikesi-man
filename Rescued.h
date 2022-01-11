@@ -14,7 +14,7 @@ public:
 public:
 	Rescued();
 	~Rescued();
-	void RescuedCollision();
-	void Move();
-	void Draw();
+	void RescuedCollision(Player* player);
+	void Move(Player* player);
+	void Draw(int scroll);
 };
