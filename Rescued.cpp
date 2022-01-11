@@ -13,7 +13,7 @@ Rescued::Rescued() {
 
 //デストラクタ
 Rescued::~Rescued() {
-
+	delete player;
 }
 
 ///-----クラス関数-----///
