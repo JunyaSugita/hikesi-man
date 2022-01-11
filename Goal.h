@@ -12,6 +12,6 @@ public:
 public:
 	Goal();
 	~Goal();
-	void GetGoal(Player* player,Rescued* rescued);
-	void Draw(Rescued* rescued,int scroll);
+	void GetGoal(Player* player, Rescued* rescued);
+	void Draw(Rescued* rescued, int scroll);
 };
