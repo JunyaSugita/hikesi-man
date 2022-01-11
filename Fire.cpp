@@ -41,18 +41,18 @@ void Fire::SetFire(int mapChip[][50]) {
 	}
 }
 
-void Fire::FireFighting() {
+void Fire::FireFighting(BULLET bullets[]) {
 	for (int i = 0; i < FIRE_CONST; i++) {
 		for (int j = 0; j < bullet->BULLET_CONST; j++) {
-			if (fire[i].isFire == true && bullet->bullet[j].isBullet == true) {
-				if (fire[i].transform.x + fire[i].Xr > bullet->bullet[j].transform.x - bullet->bullet[j].r &&
-					fire[i].transform.x - fire[i].Xr < bullet->bullet[j].transform.x + bullet->bullet[j].r &&
-					fire[i].transform.y + fire[i].Yr > bullet->bullet[j].transform.y - bullet->bullet[j].r &&
-					fire[i].transform.y - fire[i].Yr < bullet->bullet[j].transform.y + bullet->bullet[j].r) {
+			if (fire[i].isFire == true && bullets[j].isBullet == true) {
+				if (fire[i].transform.x + fire[i].Xr > bullets[j].transform.x - bullet->bullet[j].r &&
+					fire[i].transform.x - fire[i].Xr < bullets[j].transform.x + bullet->bullet[j].r &&
+					fire[i].transform.y + fire[i].Yr > bullets[j].transform.y - bullet->bullet[j].r &&
+					fire[i].transform.y - fire[i].Yr < bullets[j].transform.y + bullet->bullet[j].r) {
 
 					fire[i].Xr -= 2;
 					fire[i].Yr -= 4;
-					bullet->bullet[j].isBullet = false;
+					bullets[j].isBullet = false;
 
 					if (fire[i].Xr <= 0 || fire[i].Yr <= 0) {
 						fire[i].isFire = false;
@@ -62,6 +62,7 @@ void Fire::FireFighting() {
 		}
 	}
 }
+
 
 
 void Fire::DrawFire(int scroll) {
