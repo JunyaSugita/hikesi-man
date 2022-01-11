@@ -23,6 +23,6 @@ public:
 public:
 	Scene();
 	~Scene();
-	void Update(char* keys,char* oldkeys);
+	void Update(char* keys, char* oldkeys);
 	void Draw();
 };

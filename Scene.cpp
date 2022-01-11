@@ -24,7 +24,7 @@ Scene::~Scene() {
 
 
 ///-----関数-----///
-void Scene::Update(char* keys,char* oldkeys) {
+void Scene::Update(char* keys, char* oldkeys) {
 
 	//例外処理
 	if (keys == nullptr || oldkeys == nullptr) {
@@ -82,7 +82,7 @@ void Scene::Update(char* keys,char* oldkeys) {
 
 void Scene::Draw() {
 	// 描画処理
-	goal->Draw(rescued,player->scroll);
+	goal->Draw(rescued, player->scroll);
 	fire->DrawFire(player->scroll);
 	map->DrawMap(map->map, player->scroll);
 	rescued->Draw(player->scroll);
