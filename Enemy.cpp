@@ -19,11 +19,12 @@ Enemy::~Enemy() {
 }
 
 void Enemy::Make() {
-	for (int i = 0,z=0; i < ENEMY_CONST; i++)
+	for (int i = 0, z = 0; i < ENEMY_CONST; i++)
 	{
 		if (enemy[i].isAlive == 0) {
-			enemy[i].transform.x = 300+z;
-			enemy[i].transform.y = 300+z;
+			enemy[i].transform.x = 300 + z;
+			enemy[i].transform.y = 300 + z;
+
 			z += 30;
 			enemy[i].isAlive = 1;
 		}
@@ -50,7 +51,7 @@ void Enemy::BulletColision(BULLET bullet[]) {
 				if ((enemy[i].r + bullet[j].r) * (enemy[i].r + bullet[j].r) >=
 					(bullet[j].transform.x - enemy[i].transform.x) * (bullet[j].transform.x - enemy[i].transform.x) +
 					(bullet[j].transform.y - enemy[i].transform.y) * (bullet[j].transform.y - enemy[i].transform.y)) {
-					
+
 					bullet[j].isBullet = 0;
 					enemy[i].isAlive = 0;
 				}
