@@ -8,6 +8,7 @@ Scene::Scene() {
 	map = new Map;
 	fire = new Fire;
 	goal = new Goal;
+	ene = new Enemy;
 }
 
 //コンストラクタ
@@ -18,6 +19,7 @@ Scene::~Scene() {
 	delete map;
 	delete fire;
 	delete goal;
+	delete ene;
 }
 
 
@@ -71,6 +73,9 @@ void Scene::Update(char* keys,char* oldkeys) {
 	rescued->RescuedCollision(player);
 	goal->GetGoal(player, rescued);
 
+	//敵の出現
+	ene->Update(player->bullet->bullet);
+
 	//スクロール
 	player->GetScroll();
 }
@@ -83,6 +88,7 @@ void Scene::Draw() {
 	rescued->Draw(player->scroll);
 	player->DrawPlayer();
 	player->bullet->DrawBullet(player->scroll);
+	ene->Draw(player->scroll);
 
 	//デバッグ
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
