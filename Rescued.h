@@ -3,14 +3,14 @@
 #include "Player.h"
 
 class Rescued {
-//クラス変数
+	//クラス変数
 public:
 	Transform transform;
 	int r;
 	int isRescued;
 	Player* player;
 
-//クラス関数
+	//クラス関数
 public:
 	Rescued();
 	~Rescued();

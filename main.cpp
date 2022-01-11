@@ -29,9 +29,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 画像などのリソースデータの変数宣言と読み込み
 
-
 	// ゲームループで使う変数の宣言
-
 	Scene* scene = new Scene;
 
 	// 最新のキーボード情報用
@@ -47,7 +45,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		{
 			oldkeys[i] = keys[i];
 		}
-
 		// 更新処理
 		scene->Update(keys, oldkeys);
 
@@ -65,13 +62,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		if (ProcessMessage() == -1) {
 			break;
 		}
-
 		// ESCキーが押されたらループから抜ける
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) {
 			break;
 		}
 	}
-
+	//delete
 	delete scene;
 
 	// Dxライブラリ終了処理

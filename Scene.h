@@ -5,6 +5,7 @@
 #include"Player.h"
 #include"Rescued.h"
 #include "Goal.h"
+#include "Enemy.h"
 
 
 class Scene {
@@ -16,11 +17,12 @@ public:
 	Fire* fire;
 	Goal* goal;
 	DINPUT_JOYSTATE padInput;
+	Enemy* ene;
 	int pad;
 
 public:
 	Scene();
 	~Scene();
-	void Update(char* keys,char* oldkeys);
+	void Update(char* keys, char* oldkeys);
 	void Draw();
 };

@@ -8,6 +8,7 @@ Scene::Scene() {
 	map = new Map;
 	fire = new Fire;
 	goal = new Goal;
+	ene = new Enemy;
 }
 
 //コンストラクタ
@@ -18,11 +19,12 @@ Scene::~Scene() {
 	delete map;
 	delete fire;
 	delete goal;
+	delete ene;
 }
 
 
 ///-----関数-----///
-void Scene::Update(char* keys,char* oldkeys) {
+void Scene::Update(char* keys, char* oldkeys) {
 
 	//例外処理
 	if (keys == nullptr || oldkeys == nullptr) {
@@ -71,29 +73,29 @@ void Scene::Update(char* keys,char* oldkeys) {
 	rescued->RescuedCollision(player);
 	goal->GetGoal(player, rescued);
 
+	//敵の出現
+	ene->Update(player->bullet->bullet);
+
 	//スクロール
 	player->GetScroll();
 }
 
 void Scene::Draw() {
 	// 描画処理
-	goal->Draw(rescued,player->scroll);
+	goal->Draw(rescued, player->scroll);
 	fire->DrawFire(player->scroll);
 	map->DrawMap(map->map, player->scroll);
 	rescued->Draw(player->scroll);
 	player->DrawPlayer();
 	player->bullet->DrawBullet(player->scroll);
+	ene->Draw(player->scroll);
 
-	///*デバッグ
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-	//DrawBox(0, 0, 500, 100, GetColor(255, 255, 255), true);
-	//DrawFormatString(0, 0, GetColor(50, 50, 50), "X:%d Y:%d Z:%d",
-	//	padInput.X, padInput.Y, padInput.Z);
-	//DrawFormatString(0, 16, GetColor(50, 50, 50), "Rx:%d Ry:%d Rz:%d",
-	//	padInput.Rx, padInput.Ry, padInput.Rz);
-
-	//DrawFormatString(0, 32, GetColor(50, 50, 50), "左スティック：移動　右スティック：放水(左のみ)");
-	//DrawFormatString(0, 48, GetColor(50, 50, 50), "LB:ジャンプ");
-	//DrawFormatString(0, 64, GetColor(50, 50, 50), "Fキー:放火(デバッグ用)");
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/
+	//デバッグ
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
+	DrawBox(0, 0, 500, 100, GetColor(255, 255, 255), true);
+	DrawFormatString(0, 0, GetColor(50, 50, 50), "X:%d Y:%d Z:%d",
+		padInput.X, padInput.Y, padInput.Z);
+	DrawFormatString(0, 16, GetColor(50, 50, 50), "Rx:%d Ry:%d Rz:%d",
+		padInput.Rx, padInput.Ry, padInput.Rz);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
