@@ -73,7 +73,7 @@ void Bullet::GetBullet(int BLOCK_SIZE) {
 }
 
 void Bullet::BlockCollision(int map[][50]) {
-	for (int i = 0; i < BULLET_CONST; i++) {
+	for (int i = 0; i < 500; i++) {
 		if (bullet[i].isBullet == true) {
 			if (map[leftTopY[i]][leftTopX[i]] == BLOCK) {
 				bullet[i].isBullet = false;
