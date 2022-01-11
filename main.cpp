@@ -1,169 +1,97 @@
-#include "Player.h"
-#include "Bullet.h"
-#include "Map.h"
-#include "Fire.h"
+
 #include "Enemy.h"
+#include"Scene.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow) {
-	// ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚ÉÝ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
 	ChangeWindowMode(TRUE);
 
-	// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ðŽè“®‚Å‚Í•ÏX‚³‚¹‚¸A
-	// ‚©‚ÂƒEƒBƒ“ƒhƒEƒTƒCƒY‚É‡‚í‚¹‚ÄŠg‘å‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã‚’æ‰‹å‹•ã§ã¯å¤‰æ›´ã•ã›ãšã€
+	// ã‹ã¤ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã«åˆã‚ã›ã¦æ‹¡å¤§ã§ããªã„ã‚ˆã†ã«ã™ã‚‹
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
 
-	// ƒ^ƒCƒgƒ‹‚ð•ÏX
+	// ã‚¿ã‚¤ãƒˆãƒ«ã‚’å¤‰æ›´
 	SetMainWindowText(TITLE);
 
-	// ‰æ–ÊƒTƒCƒY‚ÌÅ‘åƒTƒCƒYAƒJƒ‰[ƒrƒbƒg”‚ðÝ’è(ƒ‚ƒjƒ^[‚Ì‰ð‘œ“x‚É‡‚í‚¹‚é)
+	// ç”»é¢ã‚µã‚¤ã‚ºã®æœ€å¤§ã‚µã‚¤ã‚ºã€ã‚«ãƒ©ãƒ¼ãƒ“ãƒƒãƒˆæ•°ã‚’è¨­å®š(ãƒ¢ãƒ‹ã‚¿ãƒ¼ã®è§£åƒåº¦ã«åˆã‚ã›ã‚‹)
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 
-	// ‰æ–ÊƒTƒCƒY‚ðÝ’è(‰ð‘œ“x‚Æ‚Ì”ä—¦‚ÅÝ’è)
+	// ç”»é¢ã‚µã‚¤ã‚ºã‚’è¨­å®š(è§£åƒåº¦ã¨ã®æ¯”çŽ‡ã§è¨­å®š)
 	SetWindowSizeExtendRate(1.0);
 
-	// ‰æ–Ê‚Ì”wŒiF‚ðÝ’è‚·‚é
+	// ç”»é¢ã®èƒŒæ™¯è‰²ã‚’è¨­å®šã™ã‚‹
 	SetBackgroundColor(0x00, 0x00, 0x00);
 
-	// DXlib‚Ì‰Šú‰»
+	// DXlibã®åˆæœŸåŒ–
 	if (DxLib_Init() == -1) { return -1; }
 
-	// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)•`‰ææƒOƒ‰ƒtƒBƒbƒN—Ìˆæ‚Í— –Ê‚ðŽw’è
+	// (ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡)æç”»å…ˆã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é ˜åŸŸã¯è£é¢ã‚’æŒ‡å®š
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// ‰æ‘œ‚È‚Ç‚ÌƒŠƒ\[ƒXƒf[ƒ^‚Ì•Ï”éŒ¾‚Æ“Ç‚Ýž‚Ý
+	// ç”»åƒãªã©ã®ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿ã®å¤‰æ•°å®£è¨€ã¨èª­ã¿è¾¼ã¿
 
 
-	// ƒQ[ƒ€ƒ‹[ƒv‚ÅŽg‚¤•Ï”‚ÌéŒ¾
-
-	//ƒXƒeƒBƒbƒN‘€ì
-	DINPUT_JOYSTATE padInput;
-	int pad;
-
-	//ƒvƒŒƒCƒ„[
-	Player* player = new Player();
-	//…
-	Bullet* bullet = new Bullet();
-	//ƒ}ƒbƒv
-	Map* map = new Map();
-	//‰Î
-	Fire* fire = new Fire();
-	//“G
+	// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã§ä½¿ã†å¤‰æ•°ã®å®£è¨€
+	//æ•µ
 	Enemy* ene = new Enemy();
 
-	// ÅV‚ÌƒL[ƒ{[ƒhî•ñ—p
+	Scene* scene = new Scene;
+
+
+	// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ç”¨
 	char keys[256] = { 0 };
 
-	// 1ƒ‹[ƒv(ƒtƒŒ[ƒ€)‘O‚ÌƒL[ƒ{[ƒhî•ñ
+	// 1ãƒ«ãƒ¼ãƒ—(ãƒ•ãƒ¬ãƒ¼ãƒ )å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±
 	char oldkeys[256] = { 0 };
 
-	// ƒQ[ƒ€ƒ‹[ƒv
+	// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	while (true) {
-		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚¾‚Á‚½‚à‚Ì‚Í1ƒtƒŒ[ƒ€‘O‚ÌƒL[ƒ{[ƒhî•ñ‚Æ‚µ‚Ä•Û‘¶
+		// æœ€æ–°ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã ã£ãŸã‚‚ã®ã¯1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã¨ã—ã¦ä¿å­˜
 		for (int i = 0; i < 256; ++i)
 		{
 			oldkeys[i] = keys[i];
 		}
-		//”z—ñ‚È‚Ì‚Åoldkey - keys;‚Ì‚æ‚¤‚É‚Å‚«‚È‚¢B—v‘f‚ð‚P‚Â‚¸‚ÂƒRƒs[
 
-		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚ðŽæ“¾
-		GetHitKeyStateAll(keys);
+		// æ›´æ–°å‡¦ç†
 
-		// ‰æ–ÊƒNƒŠƒA
-		ClearDrawScreen();
-		//---------  ‚±‚±‚©‚çƒvƒƒOƒ‰ƒ€‚ð‹Lq  ----------//
-
-		// XVˆ—
-		GetJoypadDirectInputState(DX_INPUT_PAD1, &padInput);
-		pad = GetJoypadInputState(DX_INPUT_PAD1);
-
-		//ƒ}ƒbƒv‘I‘ð
-		map->SelectMap1();
-
-		//‰Î‚ÌÝ’u
-		if (keys[KEY_INPUT_F] == 1) {
-			fire->SetFire(map->map);
-		}
-
-		//ƒvƒŒƒCƒ„[ˆÊ’u‚Ì•Û‘¶
-		player->SaveOldPlayer();
-
-		//ƒvƒŒƒCƒ„[‚ÌˆÚ“®
-		player->PlayerMove(padInput.X, padInput.Rx, padInput.Ry);
-		player->PlayerJump(pad);
-
-		//’e‚Ì”­ŽË
-		player->PlayerShot(padInput.Rx, padInput.Ry);
-
-		//’e‚Ì‹““®
-		player->bullet->BulletMove(player->G);
-
-		//“G‚ÌoŒ»
+		//æ•µã®å‡ºç¾
 		ene->Update(player->bullet->bullet);
 
-		//Á‰»
-		fire->FireFighting();
-
-		//ƒ}ƒbƒvƒ`ƒbƒvã‚ÌÀ•WˆÊ’u‚ÌŽæ“¾
-		player->GetPlayer(map->BLOCK_SIZE);
-		player->GetOldPlayer(map->BLOCK_SIZE);
-		bullet->GetBullet(map->BLOCK_SIZE);
-
-		//“–‚½‚è”»’è
-		player->BlockCollision(map->map);
-		bullet->BlockCollision(map->map);
-
-		//ƒXƒNƒ[ƒ‹
-		player->GetScroll();
-
-		// •`‰æˆ—
-		fire->DrawFire(player->scroll);
-		map->DrawMap(map->map, player->scroll);
-		player->DrawPlayer();
-		player->bullet->DrawBullet(player->scroll);
-
+		
+		// æç”»å‡¦ç†
 		ene->Draw(player->scroll);
+		scene->Update(keys, oldkeys);
 
-		//ƒfƒoƒbƒO
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
-		DrawBox(0, 0, 500, 100, GetColor(255, 255, 255), true);
-		DrawFormatString(0, 0, GetColor(50, 50, 50), "X:%d Y:%d Z:%d",
-			padInput.X, padInput.Y, padInput.Z);
-		DrawFormatString(0, 16, GetColor(50, 50, 50), "Rx:%d Ry:%d Rz:%d",
-			padInput.Rx, padInput.Ry, padInput.Rz);
+		// æç”»å‡¦ç†
+		scene->Draw();
 
-		DrawFormatString(0, 32, GetColor(50, 50, 50), "¶ƒXƒeƒBƒbƒNFˆÚ“®@‰EƒXƒeƒBƒbƒNF•ú…(¶‚Ì‚Ý)");
-		DrawFormatString(0, 48, GetColor(50, 50, 50), "LB:ƒWƒƒƒ“ƒv");
-		DrawFormatString(0, 64, GetColor(50, 50, 50), "FƒL[:•ú‰Î(ƒfƒoƒbƒO—p)");
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-		//---------  ‚±‚±‚Ü‚Å‚ÉƒvƒƒOƒ‰ƒ€‚ð‹Lq  ---------//
-		// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)— –Ê
+		//---------  ã“ã“ã¾ã§ã«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’è¨˜è¿°  ---------//
+		// (ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡)è£é¢
 		ScreenFlip();
 
-		// 20ƒ~ƒŠ•b‘Ò‹@(‹^Ž—60FPS)
+		// 20ãƒŸãƒªç§’å¾…æ©Ÿ(ç–‘ä¼¼60FPS)
 		WaitTimer(20);
 
-		// WindowsƒVƒXƒeƒ€‚©‚ç‚­‚éî•ñ‚ðˆ—‚·‚é
+		// Windowsã‚·ã‚¹ãƒ†ãƒ ã‹ã‚‰ãã‚‹æƒ…å ±ã‚’å‡¦ç†ã™ã‚‹
 		if (ProcessMessage() == -1) {
 			break;
 		}
 
-		// ESCƒL[‚ª‰Ÿ‚³‚ê‚½‚çƒ‹[ƒv‚©‚ç”²‚¯‚é
+		// ESCã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‹ã‚‰æŠœã‘ã‚‹
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) {
 			break;
 		}
 	}
 
-	delete player;
-	delete bullet;
-	delete map;
-	delete fire;
+
 	delete ene;
 
-	// Dxƒ‰ƒCƒuƒ‰ƒŠI—¹ˆ—
+	delete scene;
+
+	// Dxãƒ©ã‚¤ãƒ–ãƒ©ãƒªçµ‚äº†å‡¦ç†
 	DxLib_End();
 
-	// ³íI—¹
+	// æ­£å¸¸çµ‚äº†
 	return 0;
 }
