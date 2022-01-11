@@ -41,7 +41,7 @@ public:
 	int oldRightBottomX, oldRightBottomY;
 
 	//重力
-	const int G = 5;
+	const int G = 8;
 
 	//スクロール
 	int scroll;
