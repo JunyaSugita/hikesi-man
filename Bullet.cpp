@@ -7,7 +7,7 @@ Bullet::Bullet() {
 				0,
 				0
 			},
-			16,
+			8,
 			0,
 			0,
 			false
@@ -37,7 +37,8 @@ void Bullet::BulletShot(Transform transform, int x, int y) {
 	for (int i = 0; i < BULLET_CONST; i++) {
 		if (bullet[i].isBullet == false) {
 			bullet[i].isBullet = true;
-			bullet[i].transform = transform;
+			bullet[i].transform.x = transform.x;
+			bullet[i].transform.y = transform.y - 10;
 			bullet[i].speedX = x / 50;
 			bullet[i].speedY = y / 50;
 			break;

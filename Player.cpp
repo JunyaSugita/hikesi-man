@@ -64,8 +64,8 @@ void Player::PlayerMove(int LInputX, int RInputX, int RInputY) {
 	player.transform.y += G - player.jumpPow;
 
 	if ((RInputX <= 0 && RInputY < 0) || (RInputX <= 0 && RInputY > 0) || RInputX < 0) {
-		player.transform.x += (RInputX * -1) / 100;
-		player.transform.y += (RInputY * -1) / 100;
+		player.transform.x += (RInputX * -1) / 150;
+		player.transform.y += (RInputY * -1) / 80;
 	}
 }
 
