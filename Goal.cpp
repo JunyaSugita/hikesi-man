@@ -16,9 +16,9 @@ Goal::~Goal() {
 
 
 ///-----ƒNƒ‰ƒXŠÖ”-----///
-void Goal::GetGoal(Player* player, Rescued* rescued) {
+void Goal::GetGoal(Player* player,Rescued* rescued) {
 	if (rescued->isRescued == true) {
-		if (player->player.transform.x + player->player.r > x - 96 && x > player->player.transform.x - player->player.r) {
+		if (player->player.transform.x + player->player.r > x-96 && x > player->player.transform.x - player->player.r) {
 			if (isGoal == false) {
 				isGoal = true;
 			}
@@ -26,7 +26,7 @@ void Goal::GetGoal(Player* player, Rescued* rescued) {
 	}
 }
 
-void Goal::Draw(Rescued* rescued, int scroll) {
+void Goal::Draw(Rescued* rescued,int scroll) {
 	if (rescued->isRescued == true) {
 		if (isGoal == false) {
 			DrawBox(x - 96 - scroll, 812, x - scroll, 912, GetColor(255, 255, 0), false);
