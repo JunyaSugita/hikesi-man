@@ -33,8 +33,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-	//敵
-	Enemy* ene = new Enemy();
 
 	Scene* scene = new Scene;
 
@@ -54,13 +52,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		}
 
 		// 更新処理
-
-		//敵の出現
-		ene->Update(player->bullet->bullet);
-
-		
-		// 描画処理
-		ene->Draw(player->scroll);
 		scene->Update(keys, oldkeys);
 
 		// 描画処理
@@ -83,10 +74,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		}
 	}
-
-
-	delete ene;
-
 	delete scene;
 
 	// Dxライブラリ終了処理
