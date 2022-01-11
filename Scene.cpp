@@ -21,6 +21,10 @@ Scene::~Scene() {
 
 ///-----関数-----///
 void Scene::Update(char* keys,char* oldkeys) {
+	if (keys == nullptr || oldkeys == nullptr) {
+		printf("null\n");
+		return;
+	}
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &padInput);
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
@@ -46,7 +50,7 @@ void Scene::Update(char* keys,char* oldkeys) {
 	player->bullet->BulletMove(player->G);
 
 	//消化
-	fire->FireFighting();
+	fire->FireFighting(player->bullet->bullet);
 
 	//マップチップ上の座標位置の取得
 	player->GetPlayer(map->BLOCK_SIZE);

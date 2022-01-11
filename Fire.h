@@ -10,7 +10,7 @@ public:
 
 public:
 	void SetFire(int map[][50]);
-	void FireFighting();
+	void FireFighting(BULLET bullets[]);
 
 	void DrawFire(int scroll);
 public:
