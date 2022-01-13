@@ -3,7 +3,7 @@
 #include "map.h"
 #include "bullet.h"
 
-class Fire{
+class Fire {
 public:
 	Fire();
 	~Fire();
@@ -20,4 +20,3 @@ public:
 	Map* map;
 	Bullet* bullet;
 };
-

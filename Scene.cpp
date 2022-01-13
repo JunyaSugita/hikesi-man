@@ -1,6 +1,6 @@
 #include "Scene.h"
 
-//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 Scene::Scene() {
 	player = new Player;
 	bullet = new Bullet;
@@ -8,9 +8,10 @@ Scene::Scene() {
 	map = new Map;
 	fire = new Fire;
 	goal = new Goal;
+	ene = new Enemy;
 }
 
-//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 Scene::~Scene() {
 	delete player;
 	delete bullet;
@@ -18,13 +19,14 @@ Scene::~Scene() {
 	delete map;
 	delete fire;
 	delete goal;
+	delete ene;
 }
 
 
-///-----é–¢æ•°-----///
-void Scene::Update(char* keys,char* oldkeys) {
+///-----ŠÖ”-----///
+void Scene::Update(char* keys, char* oldkeys) {
 
-	//ä¾‹å¤–å‡¦ç†
+	//—áŠOˆ—
 	if (keys == nullptr || oldkeys == nullptr) {
 		return;
 	}
@@ -35,65 +37,65 @@ void Scene::Update(char* keys,char* oldkeys) {
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &padInput);
 	pad = GetJoypadInputState(DX_INPUT_PAD1);
 
-	//ãƒãƒƒãƒ—é¸æŠ
+	//ƒ}ƒbƒv‘I‘ğ
 	map->SelectMap1();
 
-	//ç«ã®è¨­ç½®
+	//‰Î‚Ìİ’u
 	if (keys[KEY_INPUT_F] == 1) {
 		fire->SetFire(map->map);
 	}
 
-	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ä½ç½®ã®ä¿å­˜
+	//ƒvƒŒƒCƒ„[ˆÊ’u‚Ì•Û‘¶
 	player->SaveOldPlayer();
 
-	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•
+	//ƒvƒŒƒCƒ„[‚ÌˆÚ“®
 	player->PlayerMove(padInput.X, padInput.Rx, padInput.Ry);
 	player->PlayerJump(pad);
 	rescued->Move(player);
 
-	//å¼¾ã®ç™ºå°„
+	//’e‚Ì”­Ë
 	player->PlayerShot(padInput.Rx, padInput.Ry);
 
-	//å¼¾ã®æŒ™å‹•
+	//’e‚Ì‹““®
 	player->bullet->BulletMove(player->G);
 
-	//æ¶ˆåŒ–
+	//Á‰»
 	fire->FireFighting(player->bullet->bullet);
 
-	//ãƒãƒƒãƒ—ãƒãƒƒãƒ—ä¸Šã®åº§æ¨™ä½ç½®ã®å–å¾—
+	//ƒ}ƒbƒvƒ`ƒbƒvã‚ÌÀ•WˆÊ’u‚Ìæ“¾
 	player->GetPlayer(map->BLOCK_SIZE);
 	player->GetOldPlayer(map->BLOCK_SIZE);
 	player->bullet->GetBullet(map->BLOCK_SIZE);
 
-	//å½“ãŸã‚Šåˆ¤å®š
+	//“–‚½‚è”»’è
 	player->BlockCollision(map->map);
 	player->bullet->BlockCollision(map->map);
 	rescued->RescuedCollision(player);
 	goal->GetGoal(player, rescued);
 
-	//ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
+	//“G‚ÌoŒ»
+	ene->Update(player->bullet->bullet,map);
+
+	//ƒXƒNƒ[ƒ‹
 	player->GetScroll();
 }
 
 void Scene::Draw() {
-	// æç”»å‡¦ç†
-	goal->Draw(rescued,player->scroll);
+	// •`‰æˆ—
+	goal->Draw(rescued, player->scroll);
 	fire->DrawFire(player->scroll);
 	map->DrawMap(map->map, player->scroll);
 	rescued->Draw(player->scroll);
 	player->DrawPlayer();
 	player->bullet->DrawBullet(player->scroll);
+	ene->Draw(player->scroll);
 
-	//ãƒ‡ãƒãƒƒã‚°
+	//ƒfƒoƒbƒO
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 	DrawBox(0, 0, 500, 100, GetColor(255, 255, 255), true);
 	DrawFormatString(0, 0, GetColor(50, 50, 50), "X:%d Y:%d Z:%d",
 		padInput.X, padInput.Y, padInput.Z);
 	DrawFormatString(0, 16, GetColor(50, 50, 50), "Rx:%d Ry:%d Rz:%d",
 		padInput.Rx, padInput.Ry, padInput.Rz);
-
-	DrawFormatString(0, 32, GetColor(50, 50, 50), "å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ï¼šç§»å‹•ã€€å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯ï¼šæ”¾æ°´(å·¦ã®ã¿)");
-	DrawFormatString(0, 48, GetColor(50, 50, 50), "LB:ã‚¸ãƒ£ãƒ³ãƒ—");
-	DrawFormatString(0, 64, GetColor(50, 50, 50), "Fã‚­ãƒ¼:æ”¾ç«(ãƒ‡ãƒãƒƒã‚°ç”¨)");
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

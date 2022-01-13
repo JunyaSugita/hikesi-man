@@ -1,97 +1,78 @@
-
-#include "Enemy.h"
 #include"Scene.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow) {
-	// ウィンドウモードに設定
+	// �E�B���h�E���[�h�ɐݒ�
 	ChangeWindowMode(TRUE);
 
-	// ウィンドウサイズを手動では変更させず、
-	// かつウィンドウサイズに合わせて拡大できないようにする
+	// �E�B���h�E�T�C�Y���蓮�ł͕ύX�������A
+	// ���E�B���h�E�T�C�Y�ɍ��킹�Ċg��ł��Ȃ��悤�ɂ���
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
 
-	// タイトルを変更
+	// �^�C�g����ύX
 	SetMainWindowText(TITLE);
 
-	// 画面サイズの最大サイズ、カラービット数を設定(モニターの解像度に合わせる)
+	// ��ʃT�C�Y�̍ő�T�C�Y�A�J���[�r�b�g����ݒ�(���j�^�[�̉𑜓x�ɍ��킹��)
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 
-	// 画面サイズを設定(解像度との比率で設定)
+	// ��ʃT�C�Y��ݒ�(�𑜓x�Ƃ̔䗦�Őݒ�)
 	SetWindowSizeExtendRate(1.0);
 
-	// 画面の背景色を設定する
+	// ��ʂ̔w�i�F��ݒ肷��
 	SetBackgroundColor(0x00, 0x00, 0x00);
 
-	// DXlibの初期化
+	// DXlib�̏�����
 	if (DxLib_Init() == -1) { return -1; }
 
-	// (ダブルバッファ)描画先グラフィック領域は裏面を指定
+	// (�_�u���o�b�t�@)�`���O���t�B�b�N�̈�͗��ʂ��w��
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	// 画像などのリソースデータの変数宣言と読み込み
+	// �摜�Ȃǂ̃��\�[�X�f�[�^�̕ϐ��錾�Ɠǂݍ���
 
-
-	// ゲームループで使う変数の宣言
-	//敵
-	Enemy* ene = new Enemy();
-
+	// �Q�[�����[�v�Ŏg���ϐ��̐錾
 	Scene* scene = new Scene;
 
-
-	// 最新のキーボード情報用
+	// �ŐV�̃L�[�{�[�h���p
 	char keys[256] = { 0 };
 
-	// 1ループ(フレーム)前のキーボード情報
+	// 1���[�v(�t���[��)�O�̃L�[�{�[�h���
 	char oldkeys[256] = { 0 };
 
-	// ゲームループ
+	// �Q�[�����[�v
 	while (true) {
-		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
+		// �ŐV�̃L�[�{�[�h��񂾂������̂�1�t���[���O�̃L�[�{�[�h���Ƃ��ĕۑ�
 		for (int i = 0; i < 256; ++i)
 		{
 			oldkeys[i] = keys[i];
 		}
-
-		// 更新処理
-
-		//敵の出現
-		ene->Update(player->bullet->bullet);
-
-		
-		// 描画処理
-		ene->Draw(player->scroll);
+		// �X�V����
 		scene->Update(keys, oldkeys);
 
-		// 描画処理
+		// �`�揈��
 		scene->Draw();
 
-		//---------  ここまでにプログラムを記述  ---------//
-		// (ダブルバッファ)裏面
+		//---------  �����܂łɃv���O�������L�q  ---------//
+		// (�_�u���o�b�t�@)����
 		ScreenFlip();
 
-		// 20ミリ秒待機(疑似60FPS)
+		// 20�~���b�ҋ@(�^��60FPS)
 		WaitTimer(20);
 
-		// Windowsシステムからくる情報を処理する
+		// Windows�V�X�e�����炭�������������
 		if (ProcessMessage() == -1) {
 			break;
 		}
-
-		// ESCキーが押されたらループから抜ける
+		// ESC�L�[�������ꂽ�烋�[�v���甲����
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) {
 			break;
 		}
 	}
-
-
-	delete ene;
-
+	//delete
 	delete scene;
 
-	// Dxライブラリ終了処理
+	// Dx���C�u�����I������
 	DxLib_End();
 
-	// 正常終了
+	// ����I��
 	return 0;
 }

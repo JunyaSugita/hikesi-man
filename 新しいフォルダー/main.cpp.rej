@@ -1,0 +1,9 @@
+diff a/main.cpp b/main.cpp	(rejected hunks)
+@@ -49,6 +49,7 @@
+ 	//��
+ 	Fire* fire = new Fire();
+ 	//�G
++	Enemy* ene = new Enemy();
+ 
+ 	// �ŐV�̃L�[�{�[�h���p
+ 	char keys[256] = { 0 };

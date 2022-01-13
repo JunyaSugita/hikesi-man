@@ -1,0 +1,14 @@
+﻿  main.cpp
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\main.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\main.cpp(59,15): error C2065: 'player': 定義されていない識別子です。
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\main.cpp(63,13): error C2065: 'player': 定義されていない識別子です。
+  Player.cpp
+  Scene.cpp
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\Scene.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\Scene.cpp(96,48): error C2001: 定数が 2 行目に続いています。
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\Scene.cpp(97,2): error C2146: 構文エラー: ')' が、識別子 'DrawFormatString' の前に必要です。
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\Scene.cpp(97,2): error C2146: 構文エラー: ';' が、識別子 'DrawFormatString' の前に必要です。
+  Goal.cpp
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\Goal.cpp(20,28): warning C4805: '==': 演算中の 'int' 型と 'bool' 型の混用は安全ではありません
+C:\k021g1261\TD1\TD1_No3\TD1_no3-0.1.0\Goal.cpp(30,28): warning C4805: '==': 演算中の 'int' 型と 'bool' 型の混用は安全ではありません
+  コードを生成中...
